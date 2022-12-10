@@ -51,8 +51,8 @@
                     
                         <a class="nav-link mx-auto" href="{{ route('us') }}">{{ __('Nosotros') }}</a>
                         <!-- Autentificación -->
-                        {{-- Si el usuario está registrado y su rol es 0 (usuario), muestra el carrito --}}
-                        @if(Auth::check() && Auth::user()->role == 0)
+                        {{-- Si el usuario está registrado, su rol es 0 (usuario) y está verificado... --}}
+                        @if(Auth::check() && Auth::user()->role == 0 && Auth::user()->email_verified_at)
                         <a class="mx-auto" href="{{ route('orders.index') }}" title="Ir al carrito">
                             <li class="nav-item">
                                 {{-- Muestra en pantalla 0 si el carrito viene vacío --}}

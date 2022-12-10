@@ -34,6 +34,9 @@ class ProductsController extends Controller
         /* Almacenaje en variable de sentencia eloquent que extrae
         todos los productos ordenados por columna UPDATED_AT de forma
         descendente */
+        // if(Auth::check() && !Auth::user()->email_verified_at) {
+        //     return redirect()->route('verification.notice');
+        // }
         $products = Products::orderBy('updated_at', 'DESC')->get();
         /* Reubicación de usuario a vista de productos con acoplamiento de
         variable */
@@ -158,9 +161,15 @@ class ProductsController extends Controller
     public function addtocart(Request $request) {
         // Si el usuario no está autentificado...
         if(!Auth::check()) {
-            // ... se le reubica hacia el login
-            return to_route('login');
+            // ... se le reubica hacia el registro
+            return redirect()->route('register');
         }
+        // Si el usuario está logueado pero no tiene el mail verificado...
+        if(Auth::check() && !Auth::user()->email_verified_at) {
+            // ... se le reubica hacia el aviso de verificaciones
+            return redirect()->route('verification.notice');
+        }
+
         // Se almacenan los datos que haya del SESSION en variable (los productos de carrito)
         $cart = Session::get('productsCart');
         // Almacenaje de ID de producto a excepción del TOKEN

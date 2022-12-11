@@ -28,7 +28,7 @@ Route::get('/', function () {
 // Ruta hacia sección NOSOTROS
 Route::get('/us', function () {
     return view('us');
-})->name('us')->middleware('verified');
+})->name('us');
 
 // Ruta de necesaria inclusión para autentificaciones. Modificada posteriormente
 // para usar la verificación de mails por parámetro
@@ -45,13 +45,10 @@ Route::get('products/checklogin', [\App\Http\Controllers\ProductsController::cla
     Route::post('products/addtocart', [\App\Http\Controllers\ProductsController::class, 'addtocart'])->name('products.addtocart');
 // });
 
-// OBSOLETO: Añadir a carrito con middleware (autentificación)
-// Route::post('products/addtocart', [\App\Http\Controllers\ProductsController::class, 'addtocart'])->middleware('auth')->name('products.addtocart');
-
 // Eliminar del carrito con ID
 Route::get('products/removefromcart/{id}', [\App\Http\Controllers\ProductsController::class, 'removefromcart'])->name('products.removefromcart');
 // Todas las clases por defecto que incluse el controlador PRODUCTS
-Route::resource('/products', ProductsController::class)->middleware('verified');
+Route::resource('/products', ProductsController::class);
 // Ruta hacia el formulario de pedidos
 Route::resource('/orders', OrderController::class);
 // Ruta hacia el listado de pedidos (controlador ORDER)

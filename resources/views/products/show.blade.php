@@ -9,6 +9,7 @@
                                 {{-- Si el producto no contiene imágenes, muestra PREVIEW.JPG --}}
                                 @if (isset($images) && count($images) == null)
                                     <img src="{{ asset('products_images/preview.jpg') }}" class="bd-placeholder-img card-img-top cov" width="100%" height="225">
+                                </div>
                                 @else
                                 {{-- Caso contrario, realiza un recorrido e incluye el nombre de cada imagen en cada atributo SRC --}}
                                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="3000">

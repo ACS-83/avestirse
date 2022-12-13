@@ -5,13 +5,14 @@
         <div class="px-4 py-5 my-5 text-center">
           <h1 class="display-8 fw-bold">Listado pedidos</h1>
         </div>
+        @if (isset($message['success']))
+        <div class="text-center">
+            <p class="my-3 bg-success text-white col-lg-2 col-md-2 col-sm-2 mx-auto p-2">{{ $message['success'] }}</p>
+        </div>
+        @endif
 </main>
 {{-- Muestra mensaje de aviso en pantalla cuando la variable contenga algo --}}
-    @if (isset($message['success']))
-    <div class="text-center">
-        <p class="mt-5 bg-success text-white col-lg-2 col-md-2 col-sm-2 mx-auto p-2">{{ $message['success'] }}</p>
-    </div>
-    @endif
+
     {{-- Muestra pedidos --}}
     <div class="list-group col-lg-8 mx-auto mt-5">
         {{-- Si hay pedidos... --}}

@@ -25,18 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $userLogged = auth()->check();
-        // dd($userLogged);
-        // if(isset($userLogged) && Auth::user()->role == 1) {
-        //     Order::all()->where('sent', '=', '0')->count();
-        //     View::share('ordersChecking', $ordersChecking);
-        // }
-
-        // if(isset($userLogged) && Auth::user()->role == 0) {
-        //     $user = Auth::user()->email;
-        //     $ordersChecking = Order::all()->where('mailuser', '=', $user)->where('sent', '=', 0)->count();
-        // }
-
-
+            $ordersChecking = Order::all()->where('sent', '=', '0');
+            View::share('ordersChecking', $ordersChecking);
     }
 }

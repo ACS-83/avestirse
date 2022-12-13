@@ -10,6 +10,12 @@
       <input class="btn btn-secondary" type="submit" value="Volver a pedidos">
   </form>  
   </div>
+  {{-- Muestra mensaje de aviso en pantalla cuando la variable contenga algo --}}
+  @if (isset($message['success']))
+  <div class="text-center">
+      <p class="mt-5 bg-success text-white col-lg-2 col-md-2 col-sm-2 mx-auto p-2">{{ $message['success'] }}</p>
+  </div>
+  @endif
 </main>
 <div class="container-fluid">
   {{-- Preparación de listado de pedidos procedente del controlador --}}
@@ -116,12 +122,10 @@
       {{-- Activa el envío del formulario de cambio de estado de envío en caso
         de que el administrador haga clic en él --}}
       <script type="text/javascript" defer>
-        window.addEventListener('DOMContentLoaded', (event) => {
           document.querySelector(".form-check-input").addEventListener("input", function () {
             if(this.checked) {
               document.querySelector('#submitButton').click()
             }
           });
-        });
       </script>
 @stop

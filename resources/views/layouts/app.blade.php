@@ -1,4 +1,7 @@
 {{-- Inicio cabecera APP (instalado por defecto por Laravel UI)--}}
+@if (isset($ordersChecking) && !Auth::check())
+    {{ $ordersChecking = '' }}
+@endif
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -42,9 +45,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    @if (isset($ordersChecking))
-                        {{-- {{ dd($ordersChecking) }} --}}
-                    @endif
+        
                     <!-- Izquierda Navbar -->
                     <!-- Derecha Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -85,23 +86,34 @@
                         @else
                         
                             <li class="nav-item dropdown mx-auto">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                        <a id="navbarDropdown" class="nav-link dropdown-toggle text-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            @if (isset($ordersChecking) && Auth::check() && Auth::user()->role == 1)
+                                            @php $count = count($ordersChecking) @endphp
+                                            @if (isset($count) && $count >= 1)
+                                            <span class="text-danger">• </span>
+                                            @endif
+                                            @endif
+                                            {{ Auth::user()->name }}
                                 </a>
-                                
+                                {{ ($count) }}
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     {{-- Muestra el botón de PEDIDOS si eres ADMIN o USER.
                                         Contiene comportamientos de JS para enviar
                                         el formulario al hacer clic desde un botón que se encuentra
                                         fuera de él --}}
                                     @if (Auth::check() && Auth::user()->role == 1 || Auth::check() && Auth::user()->role == 0)
-                                        <a class="dropdown-item text-md-start text-center" href="{{ route('orders.list') }}"
+                                        <a class="dropdown-item text-md-start text-center
+                                        @if (isset($count) && $count >= 1 && Auth::user()->role == 1)
+                                            {{ 'bg-danger text-white' }}
+                                        @endif
+                                        " href="{{ route('orders.list') }}"
                                             onclick="event.preventDefault();
                                             document.getElementById('list').submit();">
                                             Pedidos
                                             </a>
                                         <form id="list" action="{{ route('orders.list') }}" method="POST" class="d-none">
                                             @csrf
+                                            <button type="submit">ENVIAR</button>
                                         </form>  
                                     @endif
                                     {{-- Eliminación del SESSION cuando se hace LOGOUT --}}

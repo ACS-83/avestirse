@@ -34,8 +34,7 @@ Route::get('/us', function () {
 // para usar la verificación de mails por parámetro
 Auth::routes(['verify' => true]);
 
-// Ruta para comprobar que el usuario está registrado y verificado
-Route::get('/users', 'UserController@index')->name('users')->middleware(['auth', 'verified']);
+
 // Índice de productos
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // Comprobación de login para productos
@@ -54,4 +53,4 @@ Route::resource('/orders', OrderController::class);
 // Ruta hacia el listado de pedidos (controlador ORDER)
 Route::post('/orders/list', [\App\Http\Controllers\OrderController::class, 'orderlist'])->name('orders.list')->middleware('verified');
 // Ruta para realizar envío de pedidos
-Route::post('/orders/{order}/sent', [\App\Http\Controllers\OrderController::class, 'ordersent'])->name('orders.sent');
+Route::post('/orders/{order}/sent', [\App\Http\Controllers\OrderController::class, 'ordersent'])->name('orders.sent')->middleware('verified');

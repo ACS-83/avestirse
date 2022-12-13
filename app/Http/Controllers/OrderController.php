@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 // IMPORTACIÓN DE CLASES
 
 // Instancia de solicitud HTTP
-use Illuminate\Http\Request;
-// Modelo ORDER
 use App\Models\Order;
-// Modelo PRODUCTS
+// Modelo ORDER
 use App\Models\Products;
+// Modelo PRODUCTS
+use Illuminate\Http\Request;
 // Importación AUTH
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 // Controlador de pedidos que hereda de CONTROLLER
 class OrderController extends Controller
@@ -36,6 +37,7 @@ class OrderController extends Controller
         // Si lo anterior no ocurre...
         // ...Almacenamos en variable los datos que llegan a través de REQUEST
         $data = request()->all();
+        dd(Route::get($data));
         /* Llamamos al modelo de PRODUCTS para almacenar en variable todos los productos ordenados
         por la columna UPDATED_AT de forma descendente (el más reciente primero) */
         $products = Products::orderBy('updated_at', 'DESC')->get();
@@ -82,11 +84,12 @@ class OrderController extends Controller
                 $value['productsOrdered'] = $decode;
             }
         }
-        
+        $currentURL = url()->current();
         // Preparación de mensaje de aviso al usuario
         $message['success'] = "¡Pedido enviado!";
         // Devolución de vista de pedidos con variables de pedido y mensaje de aviso para tratar desde la vista
-        return view('orders.list')->with(compact('orders', 'message'));
+        //return view('orders.list')->with(compact('orders', 'message'));
+        return redirect()->route('orders.list')->with('orders', $orders);
     }
 
     // Método para listar pedidos

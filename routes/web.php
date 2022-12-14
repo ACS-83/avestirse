@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,7 +33,8 @@ Route::get('/us', function () {
 // para usar la verificación de mails por parámetro
 Auth::routes(['verify' => true]);
 
-
+// Ruta para comprobar que el usuario está registrado y verificado
+Route::get('/users', 'App\Http\Controllers\UserController@index')->name('users')->middleware(['auth', 'verified']);
 // Índice de productos
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // Comprobación de login para productos

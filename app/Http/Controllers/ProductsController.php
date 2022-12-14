@@ -34,9 +34,9 @@ class ProductsController extends Controller
         /* Almacenaje en variable de sentencia eloquent que extrae
         todos los productos ordenados por columna UPDATED_AT de forma
         descendente */
-        // if(Auth::check() && !Auth::user()->email_verified_at) {
-        //     return redirect()->route('verification.notice');
-        // }
+        if(Auth::check() && !Auth::user()->email_verified_at) {
+            return redirect()->route('verification.notice');
+        }
         $products = Products::orderBy('updated_at', 'DESC')->get();
         /* Reubicación de usuario a vista de productos con acoplamiento de
         variable */
@@ -62,6 +62,7 @@ class ProductsController extends Controller
                 // ... Se le lleva de vuelta al índice de productos con mensaje de aviso
                 return to_route('products.index')->with('error', 'Necesita privilegios de administrador');
             }
+           
             // Caso de que nada de lo anterior se cumpla, se reubica al usuario a la vista de 
             // creación de productos
             return view('products.create');

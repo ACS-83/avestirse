@@ -3,6 +3,7 @@
 {{-- Formulario de compra --}}
     <div class="container">
         <main>
+            
             <div class="py-5 text-center">
                 <h2>Formulario de compra</h2>
             </div>

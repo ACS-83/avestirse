@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <main>
-  
   {{-- Detalles de pedido --}}
   <div class="px-4 py-5 my-5 text-center">
     <h1 class="display-8 fw-bold">Detalle pedido</h1>
@@ -34,18 +33,17 @@
       <!-- Contenido principal -->
       <div class="row">
         <div class="col-lg-8 mx-auto">
-          
         {{-- SWITCH para actualizar el estado del envío de producto. Solo visible
           para el usuario ADMIN. Se muestra en pantalla en función del estado en que
           esté desde la BDD --}}
-          {{-- {{ $order->id }} --}}
         @if(Auth::user()->role == 1)
           @if ($order->sent == 0)
-              <div>
-             
-              <form id="orderSent" action="{{ route('orders.sent', $order->id) }}" method="POST">
+              <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" form="orderSent">
+              <label>Enviar</label>
+              <form id="orderSent" action="{{ route('orders.sent', $order->id) }}" method="POST" class="d-none">
                   @csrf
-                  <button type="submit" id="submitButton">ENVIAR</button>
+                  <button type="submit" id="submitButton" hidden></button>
               </form>  
             </div>
           @else
@@ -123,11 +121,11 @@
       </div>
       {{-- Activa el envío del formulario de cambio de estado de envío en caso
         de que el administrador haga clic en él --}}
-      {{-- <script type="text/javascript" defer>
+      <script type="text/javascript" defer>
           document.querySelector(".form-check-input").addEventListener("input", function () {
             if(this.checked) {
               document.querySelector('#submitButton').click()
             }
           });
-      </script> --}}
+      </script>
 @stop

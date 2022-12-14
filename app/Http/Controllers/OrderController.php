@@ -23,13 +23,14 @@ class OrderController extends Controller
     
      // Método para mostrar índice de pedidos
     public function index() {
+        
         // Si el usuario no está autentificado...
         if(!Auth::check()) {
             // ... Se le lleva de vuelta al índice de productos con mensaje de aviso
             return to_route('products.index')->with('error', 'Necesita estar registrado');
         }
         // Si el usuario está autentificado pero no posee rol de USUARIO...
-        if(Auth::check() && !Auth::user()->role == 0) {
+        if(Auth::check() && !Auth::user()->role == 0 || Auth::check() && !Auth::user()->role == 1) {
             // ... Se le lleva de vuelta al índice de productos con mensaje de aviso
             return to_route('products.index')->with('error', 'Necesita estar registrado');
         }
@@ -37,7 +38,6 @@ class OrderController extends Controller
         // Si lo anterior no ocurre...
         // ...Almacenamos en variable los datos que llegan a través de REQUEST
         $data = request()->all();
-        dd(Route::get($data));
         /* Llamamos al modelo de PRODUCTS para almacenar en variable todos los productos ordenados
         por la columna UPDATED_AT de forma descendente (el más reciente primero) */
         $products = Products::orderBy('updated_at', 'DESC')->get();
@@ -47,18 +47,20 @@ class OrderController extends Controller
     
     // Método "para indicar al usuario el envío de pedidos" con parámetro ID
     public function ordersent($id) {
-        // Conversión de cadena a entero del ID
-        $id = (int)$id;
+
+        
         // Si el usuario no está autentificado...
         if(!Auth::check()) {
             // ... Se le lleva de vuelta al índice de productos con mensaje de aviso
             return to_route('products.index')->with('error', 'Necesita ser administrador');
-        }
+        } else
         // Si el usuario está autentificado pero no posee rol de ADMINISTRADOR...
         if(Auth::check() && !Auth::user()->role == 1) {
             // ... Se le lleva de vuelta al índice de productos con mensaje de aviso
             return to_route('products.index')->with('error', 'Necesita ser administrador');
-        }
+        }else
+        // Conversión de cadena a entero del ID
+        $id = (int)$id;
         // Solicitud de actualización de datos del pedido que debe quedar como ENVIADO
         Order::where('id', $id)->update(['sent' => 1]);
         // Almacenado de pedidos ordenados por columna UPDATED AT
@@ -84,12 +86,11 @@ class OrderController extends Controller
                 $value['productsOrdered'] = $decode;
             }
         }
-        $currentURL = url()->current();
         // Preparación de mensaje de aviso al usuario
         $message['success'] = "¡Pedido enviado!";
         // Devolución de vista de pedidos con variables de pedido y mensaje de aviso para tratar desde la vista
-        //return view('orders.list')->with(compact('orders', 'message'));
-        return redirect()->route('orders.list')->with('orders', $orders);
+        return view('orders.list');
+
     }
 
     // Método para listar pedidos
@@ -136,8 +137,10 @@ class OrderController extends Controller
                 $value['productsOrdered'] = $decode;
             }
         }
-        // Devolución de vista de pedidos con variable de pedido adjunta
-        return view('orders.list')->with('orders', $orders);
+        // Preparación de mensaje de aviso al usuario
+        $message['success'] = "¡Pedido enviado!";
+        // Devolución de vista de pedidos con variables de pedido y mensaje de aviso para tratar desde la vista
+        return view('orders.list')->with('orders', $message);
     }
 
     /**

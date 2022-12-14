@@ -37,6 +37,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="/products_images/logo.png" class="navbar-brand" alt="" srcset="" height="39">
                     {{ config('app.name') }}
                     
                 </a>
@@ -95,7 +96,6 @@
                                             @endif
                                             {{ Auth::user()->name }}
                                 </a>
-                                {{ ($count) }}
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     {{-- Muestra el botón de PEDIDOS si eres ADMIN o USER.
                                         Contiene comportamientos de JS para enviar
@@ -103,17 +103,17 @@
                                         fuera de él --}}
                                     @if (Auth::check() && Auth::user()->role == 1 || Auth::check() && Auth::user()->role == 0)
                                         <a class="dropdown-item text-md-start text-center
-                                        @if (isset($count) && $count >= 1 && Auth::user()->role == 1)
-                                            {{ 'bg-danger text-white' }}
-                                        @endif
+                                        
                                         " href="{{ route('orders.list') }}"
                                             onclick="event.preventDefault();
                                             document.getElementById('list').submit();">
                                             Pedidos
+                                            @if (isset($count) && $count >= 1 && Auth::user()->role == 1)
+                                                <span class="badge bg-danger">{{ $count }}</span>
+                                            @endif
                                             </a>
                                         <form id="list" action="{{ route('orders.list') }}" method="POST" class="d-none">
                                             @csrf
-                                            <button type="submit">ENVIAR</button>
                                         </form>  
                                     @endif
                                     {{-- Eliminación del SESSION cuando se hace LOGOUT --}}
